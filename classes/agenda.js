@@ -1,29 +1,41 @@
 
 const { DateTime } = luxon;
+const API_URL = 'https://api.jsonbin.io/v3/b/6a01c991c0954111d808e177';
+const API_KEY = '$2a$10$aNiMzqajvn55zozmHBr.N.uMBYDsur3995vjFxksfKwRYqspHGnBq';
 
 export class Agenda {
   #eventos;
 
   constructor() {
-    this.#eventos = this.cargarDatos();
+    this.#eventos = []; //en este caso necesitamos cargar los datos desde app.js porque el metodo cargarDatos es asincrono y el constructor no lo acepta, inicializamos this.#eventos vacío y listo.
   }
 
-  cargarDatos() {
-    try {
-      const ruta = path.join(process.cwd(), "agenda.json");
-      const data = fs.readFileSync(ruta, "utf-8");
-      return JSON.parse(data);
-    } catch (error) {
-      console.log("No se pudo leer la agenda, se cargará vacía");
-      return [];
-    }
+  async cargarDatos() {
+    
+    const response = await fetch(`${API_URL}/latest`, //usamos latest para que coja la ultima versión del JSON, si no JSONBin miraría todos los registros
+      {headers: {'X-Master-KEY': API_KEY} 
+    }) 
+
+    if (!response.ok) {
+    console.error('Error en la petición:', response.status);
+    return;
+}
+
+    const data = await response.json();
+    this.#eventos = data.record;
+    
   }
 
-  guardarDatos() {
-    fs.writeFileSync(
-      path.join(process.cwd(), "agenda.json"),
-      JSON.stringify(this.#eventos, null, 2),
-    );
+  async guardarDatos() {
+    
+    await fetch(`${API_URL}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json', //Usamos el tipo MIME para que JSONBin sepa que le estamos enviando un JSON
+            'X-Master-Key': API_KEY
+        },
+        body: JSON.stringify(this.#eventos)
+    });
   }    
 
   comprobarSolapamiento(evento, duracion){
@@ -43,42 +55,32 @@ export class Agenda {
 
   } 
 
-  
+  agregarEvento(fecha, titulo, duracion) {
+    const fechaISO = DateTime.fromISO(fecha).toISO(); //convierto el string en objeto DateTime y luego aplico .toISO para que de la fecha completa
+    this.#eventos.push({ fecha: fechaISO, titulo, duracion });
+}
 
-ordenarEventos(filtro){
-  let checker = false;
+ordenarEventos(filtro){  
   let copiaEventos = [...this.#eventos]; //Uso un spread operator para conseguir una copia de mi array de eventos sin modificar el array inicial
 
     copiaEventos.sort((a, b) => DateTime.fromISO(a.fecha) - DateTime.fromISO(b.fecha)) //Lo que hago es usar sort para comparar pares de elementos del array hasta que quede ordenado. Esto se puede hacer
     //ya que Luxon permite restar dos objetos DateTime devolviendo la diferencia en milisegundos.
 
-    copiaEventos.forEach((e) => {
-      const evento = DateTime.fromISO(e.fecha);
+    return copiaEventos.filter((e) => { 
 
-      if(evento.hasSame(filtro, 'day')){
-        console.log(`
-          Título: ${e.titulo}
-          Fecha de inicio: ${evento.toLocaleString(DateTime.DATETIME_FULL)}
-          Fecha de fin: ${(evento.plus({minutes: e.duracion})).toLocaleString(DateTime.DATETIME_FULL)}
-          *************************************
-          `);       
-        /* tolocaleString sin parametros devolvería la fecha de una forma simple, en este caso necesitamos también la hora asi que usamos el metodo DATETIME_FULL*/
-        /* el metodo plus() suma a la fecha el entero que queramos a la parte de la fecha deseada, podriamos usar hours para las horas, seconds para los segundos...*/
-          checker = true; 
-        }
+      const evento = DateTime.fromISO(e.fecha);
+        return evento.hasSame(filtro, 'day');
       })
 
-      if(!checker){
-        console.log("No hay ningún evento de momento")
-      }
+      
 
     }
 
     eventosHoy(){    
-
     const hoy = DateTime.now();
-    this.ordenarEventos(hoy);  
-  }
+    return this.ordenarEventos(hoy);  
+   }
+
 
     async buscarEvento(rl){  
 

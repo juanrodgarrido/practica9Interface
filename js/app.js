@@ -1,11 +1,12 @@
-const { DateTime } = luxon;
 import { Agenda } from '../classes/Agenda.js';
+const { DateTime } = luxon;
 const agenda = new Agenda();
 
-$(document).ready(function () {
+$(document).ready(async function () {
+    await agenda.cargarDatos();
     
     function actualizarVacio() { //función para mostrar y ocultar el mensaje de "no hay eventos"
-        if ($("#listaeventos li").length === 0) {
+        if ($("#lista li").length === 0) {
         $("#vacio").show();
     } else {
         $("#vacio").hide();
@@ -13,7 +14,7 @@ $(document).ready(function () {
 
     }
 
-    $(".add").click(function (){
+    $(".add").click(async function (){
 
         const title = $(".title").val().trim();
         const fecha = $(".date").val();        
@@ -57,8 +58,36 @@ $(document).ready(function () {
         $(".date").val("");
         $(".duration").val("");
 
+        agenda.agregarEvento(fecha, title, parseInt(duracion));
+        await agenda.guardarDatos();
+
         actualizarVacio();
 
     })
+
+    $(".btn.hoy").click(function() {
+        const eventos = agenda.eventosHoy();
+        $("#lista").empty();
+
+        eventos.forEach((e) => {
+            const fecha = DateTime.fromISO(e.fecha);
+            $("#lista").append(`
+                <li class="evento">
+                <div>
+                    <strong class = "tituloEvento">${e.titulo}</strong>
+                    <p><i class="fa-regular fa-calendar"></i> ${fecha.toLocaleString(DateTime.DATE_FULL)}</p>
+                    <p><i class="fa-regular fa-clock"></i> ${fecha.toLocaleString(DateTime.TIME_SIMPLE)} (${e.duracion} minutos)</p>
+                </div>
+                <div class="actions">                    
+                    <button class="delete">✖</button>
+                </div>
+            </li>
+            `);
+        })
+
+        actualizarVacio()
+    })
+
+    
     
 });
