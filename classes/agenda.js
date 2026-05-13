@@ -82,31 +82,15 @@ ordenarEventos(filtro){
    }
 
 
-    async buscarEvento(rl){  
-
-    const diaElegido = await this.pedirDia(rl);
-    this.ordenarEventos(diaElegido);
+    buscarEvento(fecha){      
+    return this.ordenarEventos(fecha);
   }
 
-async borrarEvento(rl){
-  let contador = 1;
-
-  this.#eventos.forEach((e) => {
-    const evento = DateTime.fromISO(e.fecha);  
-    
-    console.log(`
-        ${contador}. ${e.titulo}
-        ${evento.toLocaleString(DateTime.DATETIME_FULL)}
-        `)
-    contador++
-  })
-
-  const seleccion = await this.pedirDato("Selecciona numéricamente que evento borrar (0 para volver atrás): \n", 0, this.#eventos.length, rl);
-  if(seleccion === 0){
-    return;
-  }
-  this.#eventos.splice((seleccion - 1), 1);
-  console.log('El evento se ha borrado correctamente');
+ borrarEvento(seleccion){
+  
+  
+  
+  this.#eventos = this.#eventos.filter((e) => e.fecha !== seleccion.fecha);  
   this.guardarDatos();
   
 }

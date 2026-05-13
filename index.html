@@ -3,7 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> <!-- Utilizo Font Awesome para los iconos-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <!-- Utilizo Font Awesome para los iconos-->
     <link
       rel="stylesheet"
       type="text/css"
@@ -18,7 +22,7 @@
       <p class="subtitle">Guarda y consulta tus eventos pendientes</p>
       <div class="cajas">
         <div class="addevent">
-            <h1>Añadir evento</h1>
+          <h1>Añadir evento</h1>
           <label>Título del evento</label>
           <input
             type="text"
@@ -32,15 +36,26 @@
 
           <button class="btn add">+ Añadir evento</button>
         </div>
-        <div class = "events">
-            <h1>Buscar evento</h1>           
-            <div class = "botones"><button class="btn hoy">Hoy</button>
-          <button class = "btn">Buscar por fecha</button></div>
-          <div id = "listaeventos">
-            <ul id = "lista"></ul>
-            <p id = "vacio">No se ha encontrado ningún evento</p>
+        <div class="events">
+          <h1>Buscar evento</h1>
+          <div class="conjunto">
+            <div class="botones">
+              <button class="btn hoy">Hoy</button>
+              <button class="btn buscarFecha">Buscar por fecha</button>
+            </div>
+            <div class="seleccionarFecha">
+              <label>Fecha del evento</label>
+              <div class="datebutton">
+                <input type="date" class="fechaseleccionarFecha" />
+                <button class="btn buscar">Buscar</button>
+              </div>
+            </div>
           </div>
-          
+
+          <div id="listaeventos">
+            <ul id="lista"></ul>
+            <p id="vacio">No se ha encontrado ningún evento</p>
+          </div>
         </div>
       </div>
     </div>

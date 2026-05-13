@@ -3,6 +3,7 @@ const { DateTime } = luxon;
 const agenda = new Agenda();
 
 $(document).ready(async function () {
+    $(".seleccionarFecha").hide();
     await agenda.cargarDatos();
     
     function actualizarVacio() { //función para mostrar y ocultar el mensaje de "no hay eventos"
@@ -14,7 +15,8 @@ $(document).ready(async function () {
 
     }
 
-    $(".add").click(async function (){
+
+    $(".add").click(async function() {    
 
         const title = $(".title").val().trim();
         const fecha = $(".date").val();        
@@ -50,9 +52,7 @@ $(document).ready(async function () {
                     <button class="delete">✖</button>
                 </div>
             </li>
-        `;
-
-        $("#lista").append(evento);
+        `;        
 
         $(".title").val("");
         $(".date").val("");
@@ -65,14 +65,12 @@ $(document).ready(async function () {
 
     })
 
-    $(".btn.hoy").click(function() {
-        const eventos = agenda.eventosHoy();
-        $("#lista").empty();
+    function mostrarEvento(eventos){ //función que muestra los eventos en el HTML
 
         eventos.forEach((e) => {
             const fecha = DateTime.fromISO(e.fecha);
             $("#lista").append(`
-                <li class="evento">
+                <li class="evento" data-fecha="${e.fecha}">
                 <div>
                     <strong class = "tituloEvento">${e.titulo}</strong>
                     <p><i class="fa-regular fa-calendar"></i> ${fecha.toLocaleString(DateTime.DATE_FULL)}</p>
@@ -82,11 +80,62 @@ $(document).ready(async function () {
                     <button class="delete">✖</button>
                 </div>
             </li>
-            `);
+            `); //Guardo gracias a data- (de HTML5) una variable dentro del propio <li>, lo usaré luego para poder borrar los eventos
         })
 
         actualizarVacio()
+
+    }
+    $(".btn.hoy").click(function() {
+        $(".seleccionarFecha").hide();
+        const eventos = agenda.eventosHoy();
+        $("#lista").empty();
+        mostrarEvento(eventos);
+        $(".btn.buscarFecha").addClass("blanco");
+        $(".btn.hoy.blanco").removeClass("blanco");
+        
+      
     })
+
+
+    $(".btn.buscarFecha").click(function() {
+        $(".seleccionarFecha").show();
+        $("#lista").empty();
+        $(".btn.hoy").addClass("blanco");
+        $(".btn.buscarFecha.blanco").removeClass("blanco");
+    })
+
+    $(".btn.buscar").click(function() {
+        const fecha = $(".fechaseleccionarFecha").val(); 
+
+        if(fecha === ""){
+            alert("Tienes que seleccionar una fecha");
+            return;
+        }        
+        
+        const eventosFormato = DateTime.fromISO(fecha)
+        const eventos = agenda.buscarEvento(eventosFormato);
+
+        mostrarEvento(eventos)
+        $(".fechaseleccionarFecha").val("");
+    
+    })
+
+    $(document).on("click", ".delete", async function () { //usamos document por si queremos borrar un evento recien añadido
+        
+        if (confirm("¿Estás seguro de que deseas eliminar este elemento?")) {
+            const evento = $(this).closest("li")
+            const fechaISO = evento.data("fecha"); //aqui usamos .data para sacar los datos que guardamos antes en el <li>
+            const seleccion = {fecha: fechaISO}; //convierto seleccion en un objeto con fecha para poder compararlo luego
+            
+            agenda.borrarEvento(seleccion) 
+            evento.remove();
+            actualizarVacio()  
+                     
+        }
+        
+        
+    });
 
     
     

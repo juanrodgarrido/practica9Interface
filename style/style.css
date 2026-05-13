@@ -59,9 +59,35 @@ h1 {
 .botones {
   display: flex;
   gap: 1rem;
-  border-bottom: 1px solid #e0e0e0;
-  padding-bottom: 2rem;
+  margin-bottom: 0.8rem;
   
+  
+}
+
+.seleccionarFecha{
+  display: flex;
+  flex-direction: column;
+  align-items: center;  
+}
+
+.datebutton{
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.btn.buscar{
+  margin: 0;
+  width: 20%;
+}
+
+.fechaseleccionarFecha{
+  margin: 0;  
+}
+
+.conjunto{
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 1rem;
 }
 
 .addevent,
@@ -83,14 +109,26 @@ label {
   font-family: "PoppinsL", sans-serif;
 }
 
-input,
-textarea {
+input {
   width: 100%;
   padding: 12px;
   border-radius: 8px;
   border: 1px solid #d1d5db;
   margin-bottom: 10px;
   outline: none;
+}
+
+.actions button {
+    margin-left: 5px;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.delete {
+    background: #ef4444;
+    color: white;
 }
 
 .evento {
@@ -127,11 +165,6 @@ textarea {
     margin-top: 30px;
 }
 
-textarea {
-  resize: none;
-  height: 80px;
-}
-
 .btn {
   width: 100%;
   background-color: #2563eb;
@@ -145,49 +178,28 @@ textarea {
   transition: background 0.3s;
 }
 
+.btn.buscarFecha.blanco{
+  background-color: #f3f4f6;
+  color: #2563eb;
+}
+
+.btn.hoy.blanco{
+  background-color: #f3f4f6;
+  color: #2563eb;
+}
+
 .btn:hover {
   background-color: #1e40af;
 }
 
-.tasks {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+.btn.hoy.blanco:hover, .btn.buscarFecha.blanco:hover{
+  background-color: #e5e7eb;
+
 }
+
 
 ul {
   list-style: none;
   padding: 0;
 }
 
-.task div:first-child {
-  flex: 1;
-  min-width: 0;
-}
-
-.task strong {
-  display: block;
-  margin-bottom: 5px;
-  word-wrap: break-word;
-}
-
-.actions {
-  display: flex;
-  flex-shrink: 0;
-}
-
-.actions button {
-  margin-left: 5px;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.actions button {
-  margin-left: 5px;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-}
