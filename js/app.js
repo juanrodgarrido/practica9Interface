@@ -126,9 +126,9 @@ $(document).ready(async function () {
         if (confirm("¿Estás seguro de que deseas eliminar este elemento?")) {
             const evento = $(this).closest("li")
             const fechaISO = evento.data("fecha"); //aqui usamos .data para sacar los datos que guardamos antes en el <li>
-            const seleccion = {fecha: fechaISO}; //convierto seleccion en un objeto con fecha para poder compararlo luego
             
-            agenda.borrarEvento(seleccion) 
+            
+            agenda.borrarEvento(fechaISO) 
             evento.remove();
             actualizarVacio()  
                      

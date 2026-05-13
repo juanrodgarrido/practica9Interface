@@ -90,7 +90,7 @@ ordenarEventos(filtro){
   
   
   
-  this.#eventos = this.#eventos.filter((e) => e.fecha !== seleccion.fecha);  
+  this.#eventos = this.#eventos.filter((e) => e.fecha !== seleccion);  
   this.guardarDatos();
   
 }
