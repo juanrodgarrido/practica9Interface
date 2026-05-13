@@ -39,7 +39,14 @@ $(document).ready(async function () {
             return;
         }
 
+        if(agenda.comprobarSolapamiento(fecha, duracion)){
+            alert("El evento se solapa con otro evento, no podemos añadirlo a la lista.");
+            return;
+            
+        }
         const fechaISO = DateTime.fromISO(fecha);
+
+
 
         let evento = `
             <li class="evento">
