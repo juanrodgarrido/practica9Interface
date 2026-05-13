@@ -1,4 +1,4 @@
-import { Agenda } from '../classes/Agenda.js';
+import { Agenda } from '../classes/agenda.js';
 const { DateTime } = luxon;
 const agenda = new Agenda();
 
@@ -42,7 +42,7 @@ $(document).ready(async function () {
         if(agenda.comprobarSolapamiento(fecha, duracion)){
             alert("El evento se solapa con otro evento, no podemos añadirlo a la lista.");
             return;
-            
+
         }
         const fechaISO = DateTime.fromISO(fecha);
 
