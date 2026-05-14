@@ -118,7 +118,7 @@ input {
   outline: none;
 }
 
-input[type="date"]{
+input[type="date"], input[type="datetime-local"]{
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
