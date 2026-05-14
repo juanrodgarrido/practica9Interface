@@ -127,8 +127,10 @@ $(document).ready(async function () {
         if(fecha === ""){
             alert("Tienes que seleccionar una fecha");
             return;
-        }        
+        }       
         
+        
+        $("#lista").empty();
         const eventosFormato = DateTime.fromISO(fecha)
         const eventos = agenda.buscarEvento(eventosFormato);
         $(".conjunto").removeClass("linea");
