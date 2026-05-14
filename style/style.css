@@ -85,9 +85,13 @@ h1 {
   margin: 0;  
 }
 
-.conjunto{
+.conjunto{  
+  padding-bottom: 1rem;  
   border-bottom: 1px solid #e0e0e0;
-  padding-bottom: 1rem;
+}
+
+.conjunto.linea{ 
+  border-bottom: none;
 }
 
 .addevent,
@@ -156,6 +160,9 @@ input[type="date"], input[type="datetime-local"]{
     margin-top: 1rem;
 }
 
+.labelfecha{
+  margin-bottom: 1rem;
+}
 
 .evento div:first-child {
     flex: 1;

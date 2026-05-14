@@ -108,8 +108,10 @@ $(document).ready(async function () {
     $(".btn.buscarFecha").click(function() {
         $(".seleccionarFecha").show();
         $("#lista").empty();
+        $("#vacio").hide();
         $(".btn.hoy").addClass("blanco");
         $(".btn.buscarFecha.blanco").removeClass("blanco");
+        $(".conjunto").addClass("linea");
     })
 
     $(".btn.buscar").click(function() {
@@ -122,6 +124,8 @@ $(document).ready(async function () {
         
         const eventosFormato = DateTime.fromISO(fecha)
         const eventos = agenda.buscarEvento(eventosFormato);
+        $(".conjunto").removeClass("linea");
+        
 
         mostrarEvento(eventos)
         $(".fechaseleccionarFecha").val("");
