@@ -228,7 +228,6 @@ ul {
   .events, .addevent{
     width: 80%;
   }
-
   
   .btn.buscar{
     width: 40%;
@@ -236,5 +235,9 @@ ul {
 
   input{
     font-size: 1rem;
+  }
+
+  input[type="datetime-local"]{
+    height: 40px;
   }
 }
