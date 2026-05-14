@@ -118,6 +118,11 @@ input {
   outline: none;
 }
 
+input[type="date"]{
+  -webkit-appearance: none;
+  appearance: none;
+
+}
 .actions button {
     margin-left: 5px;
     border: none;
