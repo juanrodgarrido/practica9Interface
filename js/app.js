@@ -1,6 +1,7 @@
 import { Agenda } from '../classes/agenda.js';
 const { DateTime } = luxon;
 const agenda = new Agenda();
+let checker = false; //uso checker para comprobar si tenemos el boton "hoy" pulsado, para que si añades un evento con fecha hoy y está pulsado el botón directamente se vea
 
 $(document).ready(async function () {
     $(".seleccionarFecha").hide();
@@ -65,6 +66,10 @@ $(document).ready(async function () {
         $(".date").val("");
         $(".duration").val("");
 
+        if(fechaISO.hasSame(DateTime.now(), "day") && checker === true){ 
+            $("#lista").append(evento);
+
+        }
         agenda.agregarEvento(fecha, title, parseInt(duracion));
         await agenda.guardarDatos();
 
@@ -92,16 +97,17 @@ $(document).ready(async function () {
 
         actualizarVacio()
 
-    }
+    }    
+
     $(".btn.hoy").click(function() {
         $(".seleccionarFecha").hide();
-        const eventos = agenda.eventosHoy();
-        $("#lista").empty();
-        mostrarEvento(eventos);
-        $(".btn.buscarFecha").addClass("blanco");
-        $(".btn.hoy.blanco").removeClass("blanco");
-        
-      
+    const eventos = agenda.eventosHoy();
+    $("#lista").empty();
+    mostrarEvento(eventos);
+    $(".btn.buscarFecha").addClass("blanco");
+    $(".btn.hoy.blanco").removeClass("blanco");
+    $(".conjunto").removeClass("linea");
+    checker = true;      
     })
 
 
@@ -112,6 +118,7 @@ $(document).ready(async function () {
         $(".btn.hoy").addClass("blanco");
         $(".btn.buscarFecha.blanco").removeClass("blanco");
         $(".conjunto").addClass("linea");
+        checker = false;
     })
 
     $(".btn.buscar").click(function() {
